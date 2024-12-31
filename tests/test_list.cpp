@@ -90,11 +90,21 @@ struct TestMapper {
 
 static_assert(map<TestMapper>(l1) == list<void, void, void>);
 
-static_assert(prod(l0) == l0);
+static_assert(zip(l0) == l0);
+static_assert(zip(l1) == list<List<int>, List<float>, List<char>>);
+static_assert(zip(l0, l0) == l0);
+static_assert(zip(l1, l1) == list<List<int, int>, List<float, float>, List<char, char>>);
+static_assert(zip(list<List<>>, list<int>) == list<List<List<>, int>>);
+
+static_assert(prod() == list<List<>>);
+static_assert(prod(l0) == list<>);
 static_assert(prod(l1) == list<List<int>, List<float>, List<char>>);
-static_assert(prod(l0, l0) == l0);
-static_assert(prod(l1, l1) == list<List<int, int>, List<float, float>, List<char, char>>);
-static_assert(prod(list<List<>>, list<int>) == list<List<List<>, int>>);
+static_assert(prod(list<int>, list<float>) == list<List<int, float>>);
+static_assert(prod(list<int, float>, list<float>) == list<List<int, float>, List<float, float>>);
+static_assert(prod(list<int>, list<float, int>) == list<List<int, float>, List<int, int>>);
+static_assert(
+    prod(list<int, float>, list<char, short>) ==
+    list<List<int, char>, List<int, short>, List<float, char>, List<float, short>>);
 
 static_assert(unique(l0) == l0);
 static_assert(unique(l1) == l1);

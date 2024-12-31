@@ -145,8 +145,7 @@ constexpr List<As..., Bs...> concat2(List<As...>, List<Bs...>) noexcept {
 
 }  // namespace detail
 
-template <typename... Ts>
-constexpr List<> concat() noexcept {
+inline constexpr List<> concat() noexcept {
     return {};
 }
 
@@ -237,22 +236,49 @@ constexpr List<List<Ts>...> listify(List<Ts...>) {
 }
 
 template <typename... As, typename... Bs>
-constexpr auto prodcat2(List<As...>, List<Bs...>) noexcept {
+constexpr auto zipcat2(List<As...>, List<Bs...>) noexcept {
     return List<decltype(concat(As{}, Bs{}))...>{};
 }
 
 }  // namespace detail
 
 template <typename... Ts>
-constexpr auto prod(List<Ts...> list) noexcept {
+constexpr auto zip(List<Ts...> list) noexcept {
     return detail::listify(list);
 }
 
 template <typename... Ts, typename... Lists>
-constexpr auto prod(List<Ts...> head, Lists... tail) noexcept {
+constexpr auto zip(List<Ts...> head, Lists... tail) noexcept {
     auto first = detail::listify(head);
-    auto rest = prod(tail...);
-    return detail::prodcat2(first, rest);
+    auto rest = zip(tail...);
+    return detail::zipcat2(first, rest);
+}
+
+template <typename... Lists>
+using Zip = decltype(zip(Lists{}...));
+
+namespace detail {
+
+template <typename T>
+struct PushFrontMapper {
+    template <typename L>
+    using Map = decltype(pushFront(L{}, T{}));
+};
+
+}  // namespace detail
+
+inline constexpr auto prod() noexcept {
+    return List<List<>>{};
+}
+
+template <typename... Ts, typename... Lists>
+constexpr auto prod(List<Ts...> head, Lists... tail) noexcept {
+    if constexpr (empty(head)) {
+        return head;
+    } else {
+        auto rest = prod(tail...);
+        return concat(map<detail::PushFrontMapper<Type<Ts>>>(rest)...);
+    }
 }
 
 template <typename... Lists>
@@ -338,16 +364,6 @@ concept SubsetOf = Set<L> && isSubset(L{}, Superset{});
 
 template <typename L, typename Subset>
 concept SupersetOf = Set<L> && isSubset(Subset{}, L{});
-
-namespace detail {
-
-template <typename T>
-struct PushFrontMapper {
-    template <typename L>
-    using Map = decltype(pushFront(L{}, T{}));
-};
-
-}  // namespace detail
 
 template <typename L>
 constexpr auto powerset(L list) noexcept {
