@@ -292,6 +292,9 @@ constexpr auto unite(Lists... lists) noexcept {
     return unique(concat(lists...));
 }
 
+template <typename... Lists>
+using Unite = decltype(unite(Lists{}...));
+
 template <typename From, typename What>
 constexpr auto subtract(From from, What what) noexcept {
     if constexpr (empty(from) || empty(what)) {
@@ -307,6 +310,9 @@ constexpr auto subtract(From from, What what) noexcept {
         }
     }
 }
+
+template <typename From, typename What>
+using Subtract = decltype(subtract(From{}, What{}));
 
 template <typename... As, typename Super>
 constexpr auto isSubset(List<As...>, Super sup) noexcept {
@@ -343,6 +349,9 @@ constexpr auto powerset(L list) noexcept {
         return concat(map<Mapper>(rest), rest);
     }
 }
+
+template <typename List>
+using Powerset = decltype(powerset(List{}));
 
 template <Set From, SupersetOf<From> To>
 constexpr auto injection(From from, To to) noexcept {
