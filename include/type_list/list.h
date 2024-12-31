@@ -61,8 +61,8 @@ constexpr void forEachIndexed(F f, List<Ts...>) {
 }
 
 template <typename F, typename... Ts>
-constexpr void apply(F&& f, List<Ts...>) {
-    std::forward<F>(f)(type<Ts>...);
+constexpr decltype(auto) apply(F&& f, List<Ts...>) {
+    return std::forward<F>(f)(type<Ts>...);
 }
 
 template <typename... Ts>
