@@ -221,6 +221,9 @@ constexpr auto map(List<Ts...>) {
     return List<typename Mapper::template Map<Ts>...>{};
 }
 
+template <typename Mapper, typename L>
+using Map = decltype(map<Mapper>(L{}));
+
 namespace detail {
 
 template <typename... Ts>
