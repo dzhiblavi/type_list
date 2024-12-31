@@ -141,6 +141,11 @@ constexpr List<As..., Bs...> concat2(List<As...>, List<Bs...>) noexcept {
 }  // namespace detail
 
 template <typename... Ts>
+constexpr List<> concat() noexcept {
+    return {};
+}
+
+template <typename... Ts>
 constexpr List<Ts...> concat(List<Ts...>) noexcept {
     return {};
 }

@@ -47,6 +47,7 @@ static_assert(at<0>(l1) == type<int>);
 static_assert(at<1>(l1) == type<float>);
 static_assert(at<2>(l1) == type<char>);
 
+static_assert(concat() == list<>);
 static_assert(concat(l0, l0) == list<>);
 static_assert(concat(l1, l0) == list<int, float, char>);
 static_assert(concat(l0, l1) == list<int, float, char>);
