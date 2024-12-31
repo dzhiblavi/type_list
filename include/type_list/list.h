@@ -60,6 +60,11 @@ constexpr void forEachIndexed(F f, List<Ts...>) {
     (f(i++, Type<Ts>{}), ...);
 }
 
+template <typename F, typename... Ts>
+constexpr void apply(F&& f, List<Ts...>) {
+    std::forward<F>(f)(type<Ts>...);
+}
+
 template <typename... Ts>
 constexpr size_t size(List<Ts...>) noexcept {
     return sizeof...(Ts);
