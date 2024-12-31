@@ -250,6 +250,9 @@ constexpr auto prod(List<Ts...> head, Lists... tail) noexcept {
     return detail::prodcat2(first, rest);
 }
 
+template <typename... Lists>
+using Prod = decltype(prod(Lists{}...));
+
 template <typename... Ts>
 constexpr auto unique(List<Ts...> list) noexcept {
     if constexpr (empty(list)) {
@@ -265,6 +268,9 @@ constexpr auto unique(List<Ts...> list) noexcept {
         }
     }
 }
+
+template <typename L>
+using Unique = decltype(unique(List{}));
 
 template <typename L>
 constexpr auto isASet(L list) noexcept {
