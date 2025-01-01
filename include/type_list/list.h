@@ -301,7 +301,7 @@ constexpr auto unique(List<Ts...> list) noexcept {
 }
 
 template <typename L>
-using Unique = decltype(unique(List{}));
+using Unique = decltype(unique(L{}));
 
 template <typename L>
 constexpr auto isASet(L list) noexcept {
